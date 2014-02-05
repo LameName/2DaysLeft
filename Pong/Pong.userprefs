@@ -1,0 +1,19 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Pong/source/SplashScreen.cpp">
+    <Files>
+      <File FileName="Pong/source/Game.cpp" Line="56" Column="9" />
+      <File FileName="Pong/header/Game.h" Line="4" Column="1" />
+      <File FileName="Pong/source/Main.cpp" Line="12" Column="14" />
+      <File FileName="Pong/source/MainMenu.cpp" Line="11" Column="19" />
+      <File FileName="Pong/source/SplashScreen.cpp" Line="6" Column="1" />
+      <File FileName="Pong/header/SplashScreen.h" Line="1" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="/home/philipp/Projects/Pong/Pong/source/Main.cpp" line="16" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
