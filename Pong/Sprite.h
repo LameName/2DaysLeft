@@ -17,11 +17,14 @@ public:
     virtual sf::Vector2f GetPosition() const;    
     virtual float GetWidth() const;
     virtual float GetHeight() const;
-    virtual sf::Rect<float> GetBoundingRect() const;    
+    virtual sf::Rect<float> GetBoundingRect() const;
+    void Disable();
+    bool IsDisabled();    
     
 protected:
     sf::Sprite& GetSprite();
 private:
+    bool disabled = false;
     sf::Sprite sprite;
     sf::Texture texture;
     sf::Vector2f position;

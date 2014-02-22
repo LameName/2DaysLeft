@@ -14,7 +14,7 @@ public:
     int GetSpriteCount() const;
     Sprite* Get(std::string name) const;
     
-    void Update(sf::Clock& clock);
+    void Update(sf::Time timeDelta);
     void Draw(sf::RenderWindow& renderWindow);
     
 private:

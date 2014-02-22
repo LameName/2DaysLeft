@@ -38,12 +38,17 @@ int SpriteManager::GetSpriteCount() const
     return sprites.size();
 }
 
-void SpriteManager::Update(sf::Clock& clock)
+void SpriteManager::Update(sf::Time timeDelta)
 {    
-    sf::Time timeDelta = clock.restart();
     for (std::map<std::string, Sprite*>::const_iterator it = sprites.begin(); it != sprites.end(); it++)
     {
         it->second->Update(timeDelta.asSeconds());
+        
+        if (it->second->IsDisabled())
+        {
+            delete it->second;
+            sprites.erase(it);
+        }        
     }
 }
 
