@@ -9,15 +9,28 @@ float Puck::RandomFloat(float min, float max)
     return ((float(rand()) / float(RAND_MAX)) * (max - min)) + min;
 }
 
-Puck::Puck() : velocity(200.f), elapsedTimeSinceStart(0.f)
+void Puck::Initialize()
 {
+    this->velocity = 200.f;
+    this->elapsedTimeSinceStart = 0.f;
+    
     SetTexture("images/puck.png");
     GetSprite().setOrigin(15, 15);
     
     sf::Vector2f velocity = GetRandomVelocity();
     
+    SetVelocity(velocity);
+}
+
+void Puck::SetVelocity(sf::Vector2f velocity)
+{
     moveByX = velocity.x;
     moveByY = velocity.y;
+}
+
+Puck::Puck()
+{
+    //this->Initialize();
 }
 
 Puck::~Puck()
@@ -51,7 +64,7 @@ void Puck::Update(float elapsedTime)
     if (elapsedTimeSinceStart <= 3.f)
     {
         return;
-    } 
+    }
     
     if ((GetPosition().y + moveByY <= 0 + GetHeight() / 2)
             || (GetPosition().y + GetHeight()/2 + moveByY >= Game::SCREEN_HEIGHT))
@@ -106,10 +119,26 @@ void Puck::Update(float elapsedTime)
             GetSprite().setPosition(Game::SCREEN_WIDTH / 2, Game::SCREEN_HEIGHT / 2);
             velocity = 200.f;
             elapsedTimeSinceStart = 0.f;
+            Game::elapsedTimeSinceLastUpgrade = 0.f;
         }        
     }
     
     float moveAmount = velocity * elapsedTime;
     
     GetSprite().move(moveByX * moveAmount, moveByY * moveAmount);
+}
+
+void Puck::SetVelocity(float velocity)
+{
+    this->velocity = velocity;
+}
+
+void Puck::ChangeVelocity(float amount)
+{
+    this->velocity += amount;
+    
+    if (this->velocity > 500)
+        SetVelocity(500);
+    if (this->velocity < 100)
+        SetVelocity(100);
 }

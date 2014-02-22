@@ -8,15 +8,19 @@ class Puck : public Sprite
 public:
     Puck();
     virtual ~Puck();
-    void Update(float);
+    virtual void Initialize();
+    virtual void Update(float);
     float RandomFloat(float, float);
     sf::Vector2f GetRandomVelocity();
-
-private:
+    void SetVelocity(float);
+    void ChangeVelocity(float);
+    void SetVelocity(sf::Vector2f);
+    
+protected:
     float moveByX, moveByY;
     float velocity;
     float angle;
-    float elapsedTimeSinceStart;   
+    float elapsedTimeSinceStart;
 };
 
 
