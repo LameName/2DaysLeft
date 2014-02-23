@@ -1,6 +1,9 @@
 #include "Sprite.h"
 
-Sprite::Sprite(){}
+Sprite::Sprite()
+{
+    disabled = false;
+}
 
 Sprite::~Sprite(){}
 
@@ -54,4 +57,14 @@ void Sprite::Update(float elapsedTime)
 void Sprite::Draw(sf::RenderWindow &renderWindow)
 {
     renderWindow.draw(sprite);
+}
+
+void Sprite::Disable()
+{
+    this->disabled = true;
+}
+
+bool Sprite::IsDisabled()
+{
+    return this->disabled;
 }

@@ -1,9 +1,14 @@
 #include "Game.h"
 #include "Puck.h"
+#include "Upgrade.h"
 #include "PlayerPad.h"
 #include "AIPad.h"
 #include "SplashScreen.h"
 #include "MainMenu.h"
+
+#include <cstdlib>
+#include <ctime>
+#include <string>
 
 void Game::Start()
 {
@@ -22,6 +27,7 @@ void Game::Start()
     spriteManager.Add("Player2", player2);
 
     Puck* puck = new Puck();
+    puck->Initialize();
     puck->SetPosition(SCREEN_WIDTH / 2, (SCREEN_HEIGHT / 2)-15);
     spriteManager.Add("Puck", puck);
 
@@ -41,6 +47,11 @@ sf::RenderWindow& Game::GetWindow()
 SpriteManager& Game::GetSpriteManager()
 {
     return spriteManager;
+}
+
+SpriteManager& Game::GetUpgradeManager()
+{
+    return upgradeManager;
 }
 
 bool Game::IsExiting()
@@ -68,9 +79,44 @@ void Game::GameLoop()
         case Game::Playing:
         {
             mainWindow.clear(sf::Color(0, 0, 0));
+            sf::Time timeDelta = clock.restart();
             
-            spriteManager.Update(clock);
+            elapsedTimeSinceLastUpgrade += timeDelta.asSeconds();
+            
+            if (elapsedTimeSinceLastUpgrade >= 5.f)
+            {
+                srand(time(NULL));
+                int randomValue = rand() % 3;
+                Game::UpgradeEffect effect;
+                
+                switch(randomValue)
+                {
+                    case 0:
+                        effect = Game::UpgradeEffect::SlowPuck;
+                        break;
+                    case 1:
+                        effect = Game::UpgradeEffect::SpeedPuck;
+                        break;
+                    case 2:
+                        effect = Game::UpgradeEffect::ChangePuckDirection;
+                        break;
+                }
+                
+                elapsedTimeSinceLastUpgrade = 0;
+                Upgrade* upgrade = new Upgrade();
+                upgrade->Initialize(effect);
+                upgrade->SetPosition(SCREEN_WIDTH / 2, (SCREEN_HEIGHT / 2)-15);
+                
+                std::string key = std::to_string(NextSpriteKey++);
+                
+                upgradeManager.Add(key, upgrade);
+            }
+            
+            spriteManager.Update(timeDelta);
+            upgradeManager.Update(timeDelta);
+            
             spriteManager.Draw(mainWindow);
+            upgradeManager.Draw(mainWindow);
             
             mainWindow.display();
 
@@ -113,7 +159,30 @@ void Game::ShowMenuScreen()
     }
 }
 
+void Game::ApplyUpgrade(UpgradeEffect effect)
+{
+    Puck* puck = dynamic_cast<Puck*>(spriteManager.Get("Puck"));
+    
+    switch (effect)
+    {
+        case UpgradeEffect::SpeedPuck:            
+            puck->SetVelocity(600.f);
+            break;
+        case UpgradeEffect::SlowPuck:
+            puck->SetVelocity(150.f);
+            break;
+        case UpgradeEffect::ChangePuckDirection:
+            puck->SetVelocity(puck->GetRandomVelocity());
+            break;
+        default:
+            break;
+    }
+}
+
 Game::GameState Game::gameState = Uninitialized;
 sf::RenderWindow Game::mainWindow;
 sf::Clock Game::clock;
 SpriteManager Game::spriteManager;
+SpriteManager Game::upgradeManager;
+float Game::elapsedTimeSinceLastUpgrade = 0.f;
+int Game::NextSpriteKey = 0;

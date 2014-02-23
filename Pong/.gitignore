@@ -1,4 +1,8 @@
 pong
 build/*
 dist/*
+<<<<<<< HEAD
 *o
+=======
+*.o
+>>>>>>> master
