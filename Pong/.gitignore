@@ -1,3 +1,4 @@
+pong
 build/*
 dist/*
 *.o
