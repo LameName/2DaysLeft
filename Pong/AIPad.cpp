@@ -2,7 +2,9 @@
 #include "Game.h"
 #include "Puck.h"
 
-AIPad::AIPad() : velocity(0), maxVelocity(600)
+//#include <string>
+
+AIPad::AIPad() : velocity(0), maxVelocity(600), tmp(0)
 {
     SetTexture("images/Pad2.png");
     
@@ -62,4 +64,13 @@ void AIPad::Update(float elapsedTime)
     }
   
     GetSprite().move(0, velocity * elapsedTime);
+}
+std::string AIPad::GetCount() const
+{
+    return count.str();
+}
+
+void AIPad::IncreaseCount()
+{
+    count << tmp++;
 }

@@ -14,11 +14,11 @@ CXX=g++
 
 
 # Object Files
-OBJECTFILES=AIPad.o Upgrade.o Game.o MainMenu.o PlayerPad.o Puck.o SplashScreen.o Sprite.o SpriteManager.o Counter.o main.o
+OBJECTFILES=AIPad.o Upgrade.o Game.o MainMenu.o PlayerPad.o Puck.o SplashScreen.o Sprite.o SpriteManager.o CounterManager.o main.o
 
 # C Compiler Flags
 
-CXXFLAGS=-std=c++0x -g -I../../SFML/SFML/include
+CXXFLAGS=-std=c++0x -g -Wall
 
 # Fortran Compiler Flags
 FFLAGS=

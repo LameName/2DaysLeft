@@ -1,7 +1,7 @@
 #include "PlayerPad.h"
 #include "Game.h"
 
-PlayerPad::PlayerPad() : velocity(0), maxVelocity(600.0f)
+PlayerPad::PlayerPad() : velocity(0), maxVelocity(600.0f), tmp(0)
 {
     SetTexture("images/Pad1.png");
     
@@ -59,4 +59,14 @@ void PlayerPad::Draw(sf::RenderWindow& renderWindow)
 float PlayerPad::GetVelocity() const
 {
     return velocity;
+}
+
+std::string PlayerPad::GetCount() const
+{
+    return count.str();
+}
+
+void PlayerPad::IncreaseCount()
+{
+    count << tmp++;
 }

@@ -6,9 +6,15 @@
 #include "SplashScreen.h"
 #include "MainMenu.h"
 
+
+#include <SFML/Graphics.hpp>
+
+
 #include <cstdlib>
 #include <ctime>
+#include <iostream>
 #include <string>
+
 
 void Game::Start()
 {
@@ -17,15 +23,23 @@ void Game::Start()
 
     mainWindow.create(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32), "Pong");
     gameState = Game::ShowingSplash;
-
+    sf::Font font;
+    font.loadFromFile("orange_juice.ttf");
+    int size = 30;
+    
+    
+    counterManager.Init(font, size, sf::Color::Red);
+    
     PlayerPad* player1 = new PlayerPad();
     player1->SetPosition(SCREEN_WIDTH-45, (SCREEN_HEIGHT/2));        
     spriteManager.Add("Player1", player1);
+    counterManager.Add("Player1", player1);
 
     AIPad* player2 = new AIPad();
     player2->SetPosition(45, (SCREEN_HEIGHT/2));
     spriteManager.Add("Player2", player2);
-
+    counterManager.Add("Player2", player2);
+    
     Puck* puck = new Puck();
     puck->Initialize();
     puck->SetPosition(SCREEN_WIDTH / 2, (SCREEN_HEIGHT / 2)-15);
@@ -54,6 +68,11 @@ SpriteManager& Game::GetUpgradeManager()
     return upgradeManager;
 }
 
+CounterManager& Game::GetCounterManager()
+{
+    return counterManager;
+}
+
 bool Game::IsExiting()
 {
     return gameState == Game::Exiting;
@@ -66,6 +85,14 @@ void Game::GameLoop()
     
     switch (gameState)
     {
+        case Game::Uninitialized:
+        {
+            break;
+        }
+        case Game::Exiting:
+        {
+            break;
+        }
         case Game::ShowingMenu:
         {
             ShowMenuScreen();
@@ -112,9 +139,11 @@ void Game::GameLoop()
                 upgradeManager.Add(key, upgrade);
             }
             
+            //counter.Update(timeDelta.asMilliseconds());
             spriteManager.Update(timeDelta);
             upgradeManager.Update(timeDelta);
             
+            counterManager.Draw(mainWindow);
             spriteManager.Draw(mainWindow);
             upgradeManager.Draw(mainWindow);
             
@@ -156,6 +185,8 @@ void Game::ShowMenuScreen()
         case MainMenu::Play:
             gameState = Game::Playing;
             break;
+        case MainMenu::Nothing:
+            break;
     }
 }
 
@@ -184,5 +215,6 @@ sf::RenderWindow Game::mainWindow;
 sf::Clock Game::clock;
 SpriteManager Game::spriteManager;
 SpriteManager Game::upgradeManager;
+CounterManager Game::counterManager;
 float Game::elapsedTimeSinceLastUpgrade = 0.f;
 int Game::NextSpriteKey = 0;

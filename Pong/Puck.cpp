@@ -74,6 +74,7 @@ void Puck::Update(float elapsedTime)
     }
             
     PlayerPad* player1 = dynamic_cast<PlayerPad*>(Game::GetSpriteManager().Get("Player1"));
+    AIPad* player2 = dynamic_cast<AIPad*>(Game::GetSpriteManager().Get("Player2"));
     
     if (player1 != NULL)
     {
@@ -96,11 +97,12 @@ void Puck::Update(float elapsedTime)
             velocity = 200.f;
             elapsedTimeSinceStart = 0.f;
             Game::elapsedTimeSinceLastUpgrade = 0.f;
+            player2->IncreaseCount();
             ClearUpgrades();
         }        
     }
     
-    AIPad* player2 = dynamic_cast<AIPad*>(Game::GetSpriteManager().Get("Player2"));
+    
     
     if (player2 != NULL)
     {
@@ -123,6 +125,7 @@ void Puck::Update(float elapsedTime)
             velocity = 200.f;
             elapsedTimeSinceStart = 0.f;
             Game::elapsedTimeSinceLastUpgrade = 0.f;
+            player1->IncreaseCount();
             ClearUpgrades();
         }        
     }
