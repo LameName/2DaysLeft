@@ -24,7 +24,7 @@ public:
 protected:
     sf::Sprite& GetSprite();
 private:
-    bool disabled = false;
+    bool disabled;
     sf::Sprite sprite;
     sf::Texture texture;
     sf::Vector2f position;

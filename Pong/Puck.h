@@ -13,8 +13,9 @@ public:
     float RandomFloat(float, float);
     sf::Vector2f GetRandomVelocity();
     void SetVelocity(float);
-    void ChangeVelocity(float);
     void SetVelocity(sf::Vector2f);
+    void ChangeVelocity(float);    
+    void ClearUpgrades();
     
 protected:
     float moveByX, moveByY;

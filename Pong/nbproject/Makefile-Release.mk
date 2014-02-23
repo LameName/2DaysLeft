@@ -43,6 +43,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/SplashScreen.o \
 	${OBJECTDIR}/Sprite.o \
 	${OBJECTDIR}/SpriteManager.o \
+	${OBJECTDIR}/Upgrade.o \
 	${OBJECTDIR}/main.o
 
 
@@ -109,6 +110,11 @@ ${OBJECTDIR}/SpriteManager.o: SpriteManager.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -I../../SFML/SFML/include -MMD -MP -MF $@.d -o ${OBJECTDIR}/SpriteManager.o SpriteManager.cpp
+
+${OBJECTDIR}/Upgrade.o: Upgrade.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -I../../SFML/SFML/include -MMD -MP -MF $@.d -o ${OBJECTDIR}/Upgrade.o Upgrade.cpp
 
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}

@@ -81,7 +81,7 @@ void Upgrade::Update(float elapsedTime)
             
             if (upgradeBB.left + upgradeBB.width > player2BB.left)
             {
-                SetPosition(player2BB.left - GetWidth()/2, GetPosition().y);
+                SetPosition(player2BB.left + player2BB.width + GetWidth()/2, GetPosition().y);
             }            
         }  
         

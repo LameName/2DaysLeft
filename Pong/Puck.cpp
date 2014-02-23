@@ -94,6 +94,8 @@ void Puck::Update(float elapsedTime)
             GetSprite().setPosition(Game::SCREEN_WIDTH / 2, Game::SCREEN_HEIGHT / 2);
             velocity = 200.f;
             elapsedTimeSinceStart = 0.f;
+            Game::elapsedTimeSinceLastUpgrade = 0.f;
+            ClearUpgrades();
         }        
     }
     
@@ -120,6 +122,7 @@ void Puck::Update(float elapsedTime)
             velocity = 200.f;
             elapsedTimeSinceStart = 0.f;
             Game::elapsedTimeSinceLastUpgrade = 0.f;
+            ClearUpgrades();
         }        
     }
     
@@ -141,4 +144,15 @@ void Puck::ChangeVelocity(float amount)
         SetVelocity(500);
     if (this->velocity < 100)
         SetVelocity(100);
+}
+
+void Puck::ClearUpgrades()
+{
+    for (int i = 0; i < Game::NextSpriteKey; i++)
+    {
+        std::string key = std::to_string(i);
+        Game::GetUpgradeManager().Remove(key);
+    }
+    
+    Game::NextSpriteKey = 0;
 }

@@ -83,7 +83,7 @@ void Game::GameLoop()
             
             elapsedTimeSinceLastUpgrade += timeDelta.asSeconds();
             
-            if (elapsedTimeSinceLastUpgrade >= 4.f)
+            if (elapsedTimeSinceLastUpgrade >= 5.f)
             {
                 srand(time(NULL));
                 int randomValue = rand() % 3;
@@ -166,10 +166,10 @@ void Game::ApplyUpgrade(UpgradeEffect effect)
     switch (effect)
     {
         case UpgradeEffect::SpeedPuck:            
-            puck->SetVelocity(750.f);
+            puck->SetVelocity(600.f);
             break;
         case UpgradeEffect::SlowPuck:
-            puck->SetVelocity(125.f);
+            puck->SetVelocity(150.f);
             break;
         case UpgradeEffect::ChangePuckDirection:
             puck->SetVelocity(puck->GetRandomVelocity());

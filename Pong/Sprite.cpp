@@ -1,6 +1,9 @@
 #include "Sprite.h"
 
-Sprite::Sprite(){}
+Sprite::Sprite()
+{
+    disabled = false;
+}
 
 Sprite::~Sprite(){}
 
