@@ -16,9 +16,9 @@ public:
     void SetVelocity(sf::Vector2f);
     void ChangeVelocity(float);    
     void ClearUpgrades();
-    
-protected:
     float moveByX, moveByY;
+    
+protected:    
     float velocity;
     float angle;
     float elapsedTimeSinceStart;

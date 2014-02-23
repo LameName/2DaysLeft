@@ -30,6 +30,9 @@ void Game::Start()
     puck->Initialize();
     puck->SetPosition(SCREEN_WIDTH / 2, (SCREEN_HEIGHT / 2)-15);
     spriteManager.Add("Puck", puck);
+    
+    backgroundImage.loadFromFile("images/GameplayScreen.png");
+    backgroundSprite.setTexture(backgroundImage);   
 
     while (!IsExiting())
     {
@@ -77,8 +80,10 @@ void Game::GameLoop()
             break;
         }
         case Game::Playing:
-        {
+        {   
             mainWindow.clear(sf::Color(0, 0, 0));
+            mainWindow.draw(backgroundSprite);
+            
             sf::Time timeDelta = clock.restart();
             
             elapsedTimeSinceLastUpgrade += timeDelta.asSeconds();
@@ -172,7 +177,8 @@ void Game::ApplyUpgrade(UpgradeEffect effect)
             puck->SetVelocity(150.f);
             break;
         case UpgradeEffect::ChangePuckDirection:
-            puck->SetVelocity(puck->GetRandomVelocity());
+            puck->moveByX = -puck->moveByX;
+            puck->moveByY = -puck->moveByY;
             break;
         default:
             break;
@@ -186,3 +192,5 @@ SpriteManager Game::spriteManager;
 SpriteManager Game::upgradeManager;
 float Game::elapsedTimeSinceLastUpgrade = 0.f;
 int Game::NextSpriteKey = 0;
+sf::Texture Game::backgroundImage;
+sf::Sprite Game::backgroundSprite; 

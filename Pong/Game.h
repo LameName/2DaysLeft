@@ -35,7 +35,9 @@ private:
     static GameState gameState;
     static sf::RenderWindow mainWindow;        
     static SpriteManager spriteManager;
-    static SpriteManager upgradeManager;        
+    static SpriteManager upgradeManager;    
+    static sf::Texture backgroundImage;
+    static sf::Sprite backgroundSprite; 
 };
 
 #endif

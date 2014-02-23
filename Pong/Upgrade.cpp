@@ -44,6 +44,30 @@ void Upgrade::Update(float elapsedTime)
     {
         moveByX = -moveByX;                  
     }*/
+    
+    for (int i = 0; i < Game::NextSpriteKey; i++)
+    {
+        std::string key = std::to_string(i);
+        Upgrade* up = dynamic_cast<Upgrade*>(Game::GetUpgradeManager().Get(key));
+        
+        if (up != NULL)
+        {
+            sf::Rect<float> upBB = up->GetBoundingRect();
+            sf::Rect<float> thisBB = GetBoundingRect();
+            
+            if (upBB != thisBB)
+            {
+                if(upBB.intersects(thisBB))
+                {
+                    moveByX = -moveByX;
+                    moveByY = -moveByY;
+                    
+                    up->moveByX = -up->moveByX;
+                    up->moveByY = -up->moveByY;
+                }
+            }
+        }
+    }
             
     PlayerPad* player1 = dynamic_cast<PlayerPad*>(Game::GetSpriteManager().Get("Player1"));
     
@@ -101,7 +125,16 @@ void Upgrade::Update(float elapsedTime)
         if (puckBB.intersects(upgradeBB))
         {
             Game::ApplyUpgrade(this->upgradeEffect);
-            this->Disable();
+            
+            if (this->upgradeEffect == Game::UpgradeEffect::ChangePuckDirection)
+            {
+                moveByX = -moveByX;
+                moveByY = -moveByY;
+            }
+            else
+            {
+                this->Disable();
+            }
         }
     }
     
