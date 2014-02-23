@@ -83,7 +83,7 @@ void Game::GameLoop()
             
             elapsedTimeSinceLastUpgrade += timeDelta.asSeconds();
             
-            if (elapsedTimeSinceLastUpgrade >= 5.f)
+            if (elapsedTimeSinceLastUpgrade >= 3.5f)
             {
                 srand(time(NULL));
                 int randomValue = rand() % 3;

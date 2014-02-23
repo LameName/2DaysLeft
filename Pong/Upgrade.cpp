@@ -8,17 +8,17 @@ void Upgrade::Initialize(Game::UpgradeEffect effect)
     switch (effect)
     {
         case Game::UpgradeEffect::SpeedPuck:
-            SetTexture("images/speedUp.png");
+            SetTexture("images/orb1.png");
             break;
         case Game::UpgradeEffect::SlowPuck:
-            SetTexture("images/slowUp.png");
+            SetTexture("images/orb5.png");
             break;
         case Game::UpgradeEffect::ChangePuckDirection:
-            SetTexture("images/changeDirectionsUp.png");
+            SetTexture("images/orb3.png");
             break;            
     }
     
-    this->velocity = 200.f;
+    this->velocity = 300.f;
     this->upgradeEffect = effect;
     
     GetSprite().setOrigin(37.5, 37.5);
