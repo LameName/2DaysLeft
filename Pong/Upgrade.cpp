@@ -160,16 +160,7 @@ void Upgrade::Update(float elapsedTime)
         if (puckBB.intersects(upgradeBB))
         {
             Game::ApplyUpgrade(this->upgradeEffect);
-            
-            if (this->upgradeEffect == Game::UpgradeEffect::ChangePuckDirection)
-            {
-                moveByX = -puck->moveByX;
-                moveByY = -puck->moveByY;
-            }
-            else
-            {
-                this->Disable();
-            }
+            this->Disable();
         }
     }
     
