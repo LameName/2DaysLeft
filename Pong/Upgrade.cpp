@@ -1,6 +1,7 @@
 #include "Upgrade.h"
 #include "Game.h"
 #include "PlayerPad.h"
+#include "PlayerPadMulti.h"
 #include "AIPad.h"
 
 void Upgrade::Initialize(Game::UpgradeEffect effect)
@@ -103,7 +104,30 @@ void Upgrade::Update(float elapsedTime)
         }        
     }
     
-    AIPad* player2 = dynamic_cast<AIPad*>(Game::GetSpriteManager().Get("Player2"));
+    AIPad* playerAI = dynamic_cast<AIPad*>(Game::GetSpriteManager().Get("PlayerAI"));
+    
+    if (playerAI != NULL)
+    {
+        sf::Rect<float> player2BB = playerAI->GetBoundingRect();
+        sf::Rect<float> upgradeBB = GetBoundingRect();
+        
+        if (player2BB.intersects(upgradeBB))
+        {
+            moveByX = -moveByX;
+            
+            if (upgradeBB.left + upgradeBB.width > player2BB.left)
+            {
+                SetPosition(player2BB.left + player2BB.width + GetWidth()/2, GetPosition().y);
+            }            
+        }  
+        
+        if (GetPosition().x + GetWidth() / 2 + moveByY >= Game::SCREEN_WIDTH)
+        {
+            this->Disable();
+        }     
+    }
+    
+    PlayerPadMulti* player2 = dynamic_cast<PlayerPadMulti*>(Game::GetSpriteManager().Get("Player2"));
     
     if (player2 != NULL)
     {

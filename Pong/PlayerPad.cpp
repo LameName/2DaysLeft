@@ -60,3 +60,13 @@ float PlayerPad::GetVelocity() const
 {
     return velocity;
 }
+
+std::string PlayerPad::GetCount() const
+{
+    return count.str();
+}
+
+void PlayerPad::IncreaseCount()
+{
+    count << 'I';
+}

@@ -68,3 +68,7 @@ bool Sprite::IsDisabled()
 {
     return this->disabled;
 }
+std::string Sprite::GetCount() const
+{
+    return nullptr;
+}

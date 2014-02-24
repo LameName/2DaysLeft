@@ -8,7 +8,6 @@
       <itemPath>Game.h</itemPath>
       <itemPath>MainMenu.h</itemPath>
       <itemPath>PlayerPad.h</itemPath>
-      <itemPath>PlayerPadMulti.h</itemPath>
       <itemPath>Puck.h</itemPath>
       <itemPath>SplashScreen.h</itemPath>
       <itemPath>Sprite.h</itemPath>
@@ -26,7 +25,6 @@
       <itemPath>Game.cpp</itemPath>
       <itemPath>MainMenu.cpp</itemPath>
       <itemPath>PlayerPad.cpp</itemPath>
-      <itemPath>PlayerPadMulti.cpp</itemPath>
       <itemPath>Puck.cpp</itemPath>
       <itemPath>SplashScreen.cpp</itemPath>
       <itemPath>Sprite.cpp</itemPath>
@@ -75,6 +73,10 @@
       </item>
       <item path="AIPad.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="CounterManager.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CounterManager.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="Game.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Game.h" ex="false" tool="3" flavor2="0">
@@ -86,10 +88,6 @@
       <item path="PlayerPad.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="PlayerPad.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="PlayerPadMulti.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="PlayerPadMulti.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Puck.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -160,6 +158,10 @@
       </item>
       <item path="AIPad.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="CounterManager.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CounterManager.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="Game.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Game.h" ex="false" tool="3" flavor2="0">
@@ -171,10 +173,6 @@
       <item path="PlayerPad.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="PlayerPad.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="PlayerPadMulti.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="PlayerPadMulti.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Puck.cpp" ex="false" tool="1" flavor2="0">
       </item>

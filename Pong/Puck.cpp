@@ -5,6 +5,7 @@
 #include "AIPad.h"
 #include <stdlib.h>
 
+
 float Puck::RandomFloat(float min, float max)
 {
     return ((float(rand()) / float(RAND_MAX)) * (max - min)) + min;
@@ -83,6 +84,8 @@ void Puck::Update(float elapsedTime)
     }
             
     PlayerPad* player1 = dynamic_cast<PlayerPad*>(Game::GetSpriteManager().Get("Player1"));
+    AIPad* playerAI = dynamic_cast<AIPad*>(Game::GetSpriteManager().Get("PlayerAI"));
+    PlayerPadMulti* player2 = dynamic_cast<PlayerPadMulti*>(Game::GetSpriteManager().Get("Player2"));
     
     if (player1 != NULL)
     {
@@ -106,12 +109,15 @@ void Puck::Update(float elapsedTime)
             velocity = 200.f;
             elapsedTimeSinceStart = 0.f;
             Game::elapsedTimeSinceLastUpgrade = 0.f;
+            if (player2 != NULL)
+                player2->IncreaseCount();
+            if (playerAI != NULL)
+                playerAI->IncreaseCount();
             ClearUpgrades();
             pointSound.play();
         }        
     }
     
-    AIPad* playerAI = dynamic_cast<AIPad*>(Game::GetSpriteManager().Get("PlayerAI"));
     
     if (playerAI != NULL)
     {
@@ -135,12 +141,13 @@ void Puck::Update(float elapsedTime)
             velocity = 200.f;
             elapsedTimeSinceStart = 0.f;
             Game::elapsedTimeSinceLastUpgrade = 0.f;
+            player1->IncreaseCount();
             ClearUpgrades();
             pointSound.play();
         }        
     }
     
-    PlayerPadMulti* player2 = dynamic_cast<PlayerPadMulti*>(Game::GetSpriteManager().Get("Player2"));
+    
 
     if (player2 != NULL)
     {
@@ -162,6 +169,7 @@ void Puck::Update(float elapsedTime)
                 GetSprite().setPosition(Game::SCREEN_WIDTH / 2, Game::SCREEN_HEIGHT / 2);
                 velocity = 200.f;
                 elapsedTimeSinceStart = 0.f;
+                player1->IncreaseCount();
                 Game::elapsedTimeSinceLastUpgrade = 0.f;
                 ClearUpgrades();
         }

@@ -14,7 +14,7 @@ CXX=g++
 
 
 # Object Files
-OBJECTFILES=AIPad.o Upgrade.o Game.o MainMenu.o PlayerPad.o PlayerPadMulti.o Puck.o SplashScreen.o Sprite.o SpriteManager.o CounterManager.o main.o
+OBJECTFILES=AIPad.o Upgrade.o Game.o MainMenu.o PlayerPad.o Puck.o SplashScreen.o Sprite.o SpriteManager.o CounterManager.o main.o
 
 # C Compiler Flags
 

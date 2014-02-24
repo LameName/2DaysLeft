@@ -18,6 +18,9 @@ public:
     virtual float GetWidth() const;
     virtual float GetHeight() const;
     virtual sf::Rect<float> GetBoundingRect() const;
+    
+    virtual std::string GetCount() const;
+    
     void Disable();
     bool IsDisabled();    
     
