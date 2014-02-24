@@ -20,7 +20,10 @@ public:
     static void ApplyUpgrade(UpgradeEffect effect);
     
     static int NextSpriteKey;
-    static float elapsedTimeSinceLastUpgrade;   
+    static float elapsedTimeSinceLastUpgrade;  
+    
+    static void SetPlayerAI();
+    static void SetPlayer2();
 
 private:
     static sf::Clock clock;    
@@ -30,7 +33,7 @@ private:
     static void ShowSplashScreen();
     static void ShowMenuScreen();
 
-    enum GameState { Uninitialized, ShowingSplash, ShowingMenu, Playing, Exiting };
+    enum GameState { Uninitialized, ShowingSplash, ShowingMenu, PlayingSingle, PlayingMulti, Exiting };
 
     static GameState gameState;
     static sf::RenderWindow mainWindow;        

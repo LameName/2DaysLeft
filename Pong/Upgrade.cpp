@@ -36,8 +36,19 @@ void Upgrade::Update(float elapsedTime)
     if ((GetPosition().y + moveByY <= 0 + GetHeight() / 2)
             || (GetPosition().y + GetHeight()/2 + moveByY >= Game::SCREEN_HEIGHT))
     {
-        moveByY = -moveByY;                  
+        moveByY = -moveByY;                 
     }
+    
+    /*if (GetPosition().y + moveByY <= 0 + GetHeight() / 2)
+    {
+        moveByY = -moveByY;
+        this->SetPosition(0, this->GetPosition().y + 1);
+    }
+    if (GetPosition().y + GetHeight() / 2 + moveByY >= Game::SCREEN_HEIGHT)
+    {
+        moveByY = -moveByY;
+        this->SetPosition(0, this->GetPosition().y - 1);
+    }*/
     
     /*if ((GetPosition().x + moveByX <= 0 + GetWidth() / 2)
             || (GetPosition().x + GetWidth()/2 + moveByX >= Game::SCREEN_WIDTH))
@@ -128,8 +139,8 @@ void Upgrade::Update(float elapsedTime)
             
             if (this->upgradeEffect == Game::UpgradeEffect::ChangePuckDirection)
             {
-                moveByX = -moveByX;
-                moveByY = -moveByY;
+                moveByX = -puck->moveByX;
+                moveByY = -puck->moveByY;
             }
             else
             {

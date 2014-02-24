@@ -2,6 +2,7 @@
 #include "Puck.h"
 #include "Upgrade.h"
 #include "PlayerPad.h"
+#include "PlayerPadMulti.h"
 #include "AIPad.h"
 #include "SplashScreen.h"
 #include "MainMenu.h"
@@ -22,16 +23,16 @@ void Game::Start()
     player1->SetPosition(SCREEN_WIDTH-45, (SCREEN_HEIGHT/2));        
     spriteManager.Add("Player1", player1);
 
-    AIPad* player2 = new AIPad();
+    /*AIPad* player2 = new AIPad();
     player2->SetPosition(45, (SCREEN_HEIGHT/2));
-    spriteManager.Add("Player2", player2);
+    spriteManager.Add("Player2", player2);*/
 
     Puck* puck = new Puck();
     puck->Initialize();
     puck->SetPosition(SCREEN_WIDTH / 2, (SCREEN_HEIGHT / 2)-15);
     spriteManager.Add("Puck", puck);
     
-    backgroundImage.loadFromFile("images/GameplayScreen.png");
+    backgroundImage.loadFromFile("images/GameplayScreen2.png");
     backgroundSprite.setTexture(backgroundImage);   
 
     while (!IsExiting())
@@ -79,8 +80,94 @@ void Game::GameLoop()
             ShowSplashScreen();
             break;
         }
-        case Game::Playing:
-        {   
+        case Game::PlayingMulti:
+		{
+			//AIPad* playerAI = dynamic_cast<AIPad*>(Game::GetSpriteManager().Get("PlayerAI"));
+			PlayerPadMulti* player2 = dynamic_cast<PlayerPadMulti*>(Game::GetSpriteManager().Get("Player2"));
+
+                        spriteManager.Remove("PlayerAI");
+                        
+			/*if (playerAI != NULL)
+			{
+                                spriteManager.Remove("PlayerAI");
+			}*/
+			if (player2 == NULL)
+			{
+				SetPlayer2();
+			}
+
+			mainWindow.clear(sf::Color(0, 0, 0));
+                        mainWindow.draw(backgroundSprite);
+                        
+			sf::Time timeDelta = clock.restart();
+
+			elapsedTimeSinceLastUpgrade += timeDelta.asSeconds();
+
+			if (elapsedTimeSinceLastUpgrade >= 5.f)
+			{
+				srand(time(NULL));
+				int randomValue = rand() % 3;
+				Game::UpgradeEffect effect;
+
+				switch (randomValue)
+				{
+				case 0:
+					effect = Game::UpgradeEffect::SlowPuck;
+					break;
+				case 1:
+					effect = Game::UpgradeEffect::SpeedPuck;
+					break;
+				case 2:
+					effect = Game::UpgradeEffect::ChangePuckDirection;
+					break;
+				}
+
+				elapsedTimeSinceLastUpgrade = 0;
+				Upgrade* upgrade = new Upgrade();
+				upgrade->Initialize(effect);
+				upgrade->SetPosition(SCREEN_WIDTH / 2, (SCREEN_HEIGHT / 2) - 15);
+
+				std::string key = std::to_string(NextSpriteKey++);
+
+				upgradeManager.Add(key, upgrade);
+			}
+
+			spriteManager.Update(timeDelta);
+			upgradeManager.Update(timeDelta);
+
+			spriteManager.Draw(mainWindow);
+			upgradeManager.Draw(mainWindow);
+
+			mainWindow.display();
+
+			if (currentEvent.type == sf::Event::Closed)
+			{
+				gameState = Game::Exiting;
+			}
+			if (currentEvent.type == sf::Event::KeyPressed)
+			{
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape))
+				{
+					ShowMenuScreen();
+				}
+			}
+			break;
+		}
+        
+        case Game::PlayingSingle:
+        {
+            AIPad* playerAI = dynamic_cast<AIPad*>(Game::GetSpriteManager().Get("PlayerAI"));
+            PlayerPadMulti* player2 = dynamic_cast<PlayerPadMulti*>(Game::GetSpriteManager().Get("Player2"));
+
+            if (playerAI == NULL)
+            {
+                    SetPlayerAI();
+            }
+            if (player2 != NULL)
+            {
+                    spriteManager.Remove("Player2");
+            }  
+            
             mainWindow.clear(sf::Color(0, 0, 0));
             mainWindow.draw(backgroundSprite);
             
@@ -110,11 +197,46 @@ void Game::GameLoop()
                 elapsedTimeSinceLastUpgrade = 0;
                 Upgrade* upgrade = new Upgrade();
                 upgrade->Initialize(effect);
-                upgrade->SetPosition(SCREEN_WIDTH / 2, (SCREEN_HEIGHT / 2)-15);
+                upgrade->SetPosition(SCREEN_WIDTH / 2, (SCREEN_HEIGHT / 2)-15);               
                 
-                std::string key = std::to_string(NextSpriteKey++);
+                bool canAdd = true;
                 
-                upgradeManager.Add(key, upgrade);
+                if (Game::NextSpriteKey > 1)
+                {                    
+                    for (int i = 0; i < Game::NextSpriteKey; i++)
+                    {
+                        std::string key = std::to_string(i);
+                        Upgrade* up = dynamic_cast<Upgrade*>(Game::GetUpgradeManager().Get(key));
+
+                        if (up != NULL)
+                        {
+                            sf::Rect<float> upBB = up->GetBoundingRect();
+                            sf::Rect<float> thisBB = upgrade->GetBoundingRect();
+
+                            if (upBB != thisBB)
+                            {
+                                if(upBB.intersects(thisBB))
+                                {
+                                   canAdd = false; 
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                if (canAdd)
+                {
+                    Puck* puck = dynamic_cast<Puck*>(Game::GetSpriteManager().Get("Puck"));
+
+                    if (puck != NULL)
+                    {
+                        if (!(upgrade->GetBoundingRect().intersects(puck->GetBoundingRect())))
+                        {
+                            std::string key = std::to_string(NextSpriteKey++);                
+                            upgradeManager.Add(key, upgrade);
+                        }
+                    }
+                }
             }
             
             spriteManager.Update(timeDelta);
@@ -149,8 +271,7 @@ void Game::ShowSplashScreen()
 }
 
 void Game::ShowMenuScreen()
-{
-    MainMenu mainMenu;
+{MainMenu mainMenu;
     MainMenu::MenuResult result = mainMenu.Show(mainWindow);
 
     switch (result)
@@ -158,8 +279,11 @@ void Game::ShowMenuScreen()
         case MainMenu::Exit:
             gameState = Game::Exiting;
             break;
-        case MainMenu::Play:
-            gameState = Game::Playing;
+        case MainMenu::PlaySingle:
+            gameState = Game::PlayingSingle;
+            break;
+        case MainMenu::PlayMulti:
+            gameState = Game::PlayingMulti;
             break;
     }
 }
@@ -171,10 +295,10 @@ void Game::ApplyUpgrade(UpgradeEffect effect)
     switch (effect)
     {
         case UpgradeEffect::SpeedPuck:            
-            puck->SetVelocity(600.f);
+            puck->SetVelocity(500.f);
             break;
         case UpgradeEffect::SlowPuck:
-            puck->SetVelocity(150.f);
+            puck->SetVelocity(200.f);
             break;
         case UpgradeEffect::ChangePuckDirection:
             puck->moveByX = -puck->moveByX;
@@ -184,6 +308,21 @@ void Game::ApplyUpgrade(UpgradeEffect effect)
             break;
     }
 }
+
+void Game::SetPlayerAI()
+{
+	AIPad* playerAI = new AIPad();
+	playerAI->SetPosition(45, (SCREEN_HEIGHT / 2));
+	spriteManager.Add("PlayerAI", playerAI);
+}
+
+void Game::SetPlayer2()
+{
+	PlayerPadMulti* player2 = new PlayerPadMulti();
+	player2->SetPosition(45, (SCREEN_HEIGHT / 2));
+	spriteManager.Add("Player2", player2);
+}
+
 
 Game::GameState Game::gameState = Uninitialized;
 sf::RenderWindow Game::mainWindow;

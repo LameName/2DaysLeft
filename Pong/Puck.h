@@ -1,6 +1,7 @@
 #ifndef __PUCK_H
 #define	__PUCK_H
 
+#include "SFML/Audio.hpp"
 #include "Sprite.h"
 
 class Puck : public Sprite
@@ -22,6 +23,13 @@ protected:
     float velocity;
     float angle;
     float elapsedTimeSinceStart;
+    sf::SoundBuffer collisionSoundBuffer;
+    sf::SoundBuffer pointSoundBuffer;
+    sf::SoundBuffer victorySoundBuffer;
+    
+    sf::Sound collisionSound;
+    sf::Sound pointSound;
+    sf::Sound victorySound;
 };
 
 

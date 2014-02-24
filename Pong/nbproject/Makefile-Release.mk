@@ -39,6 +39,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/Game.o \
 	${OBJECTDIR}/MainMenu.o \
 	${OBJECTDIR}/PlayerPad.o \
+	${OBJECTDIR}/PlayerPadMulti.o \
 	${OBJECTDIR}/Puck.o \
 	${OBJECTDIR}/SplashScreen.o \
 	${OBJECTDIR}/Sprite.o \
@@ -90,6 +91,11 @@ ${OBJECTDIR}/PlayerPad.o: PlayerPad.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -I../../SFML/SFML/include -MMD -MP -MF $@.d -o ${OBJECTDIR}/PlayerPad.o PlayerPad.cpp
+
+${OBJECTDIR}/PlayerPadMulti.o: PlayerPadMulti.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -I../../SFML/SFML/include -MMD -MP -MF $@.d -o ${OBJECTDIR}/PlayerPadMulti.o PlayerPadMulti.cpp
 
 ${OBJECTDIR}/Puck.o: Puck.cpp 
 	${MKDIR} -p ${OBJECTDIR}

@@ -1,6 +1,7 @@
 #include "Puck.h"
 #include "Game.h"
 #include "PlayerPad.h"
+#include "PlayerPadMulti.h"
 #include "AIPad.h"
 #include <stdlib.h>
 
@@ -20,6 +21,14 @@ void Puck::Initialize()
     sf::Vector2f velocity = GetRandomVelocity();
     
     SetVelocity(velocity);
+    
+    this->collisionSoundBuffer.loadFromFile("audio/collision.wav");
+    this->pointSoundBuffer.loadFromFile("audio/point.wav");
+    this->victorySoundBuffer.loadFromFile("audio/victory.wav");
+    
+    this->collisionSound.setBuffer(collisionSoundBuffer);
+    this->pointSound.setBuffer(pointSoundBuffer);
+    this->victorySound.setBuffer(victorySoundBuffer);
 }
 
 void Puck::SetVelocity(sf::Vector2f velocity)
@@ -69,7 +78,8 @@ void Puck::Update(float elapsedTime)
     if ((GetPosition().y + moveByY <= 0 + GetHeight() / 2)
             || (GetPosition().y + GetHeight()/2 + moveByY >= Game::SCREEN_HEIGHT))
     {
-        moveByY = -moveByY;                  
+        moveByY = -moveByY;
+        collisionSound.play();
     }
             
     PlayerPad* player1 = dynamic_cast<PlayerPad*>(Game::GetSpriteManager().Get("Player1"));
@@ -82,6 +92,7 @@ void Puck::Update(float elapsedTime)
         if (player1BB.intersects(puckBB))
         {
             moveByX = -moveByX;
+            collisionSound.play();
             
             if (puckBB.left + puckBB.width > player1BB.left)
             {
@@ -96,19 +107,21 @@ void Puck::Update(float elapsedTime)
             elapsedTimeSinceStart = 0.f;
             Game::elapsedTimeSinceLastUpgrade = 0.f;
             ClearUpgrades();
+            pointSound.play();
         }        
     }
     
-    AIPad* player2 = dynamic_cast<AIPad*>(Game::GetSpriteManager().Get("Player2"));
+    AIPad* playerAI = dynamic_cast<AIPad*>(Game::GetSpriteManager().Get("PlayerAI"));
     
-    if (player2 != NULL)
+    if (playerAI != NULL)
     {
-        sf::Rect<float> player2BB = player2->GetBoundingRect();
+        sf::Rect<float> player2BB = playerAI->GetBoundingRect();
         sf::Rect<float> puckBB = GetBoundingRect();
         
         if (player2BB.intersects(puckBB))
         {
             moveByX = -moveByX;
+            collisionSound.play();
             
             if (puckBB.left < player2BB.left + player2BB.width)
             {
@@ -123,7 +136,35 @@ void Puck::Update(float elapsedTime)
             elapsedTimeSinceStart = 0.f;
             Game::elapsedTimeSinceLastUpgrade = 0.f;
             ClearUpgrades();
+            pointSound.play();
         }        
+    }
+    
+    PlayerPadMulti* player2 = dynamic_cast<PlayerPadMulti*>(Game::GetSpriteManager().Get("Player2"));
+
+    if (player2 != NULL)
+    {
+        sf::Rect<float> player2BB = player2->GetBoundingRect();
+        sf::Rect<float> puckBB = GetBoundingRect();
+
+        if (player2BB.intersects(puckBB))
+        {
+                moveByX = -moveByX;
+
+                if (puckBB.left < player2BB.left + player2BB.width)
+                {
+                        SetPosition(player2BB.left + player2BB.width + GetWidth() / 2, GetPosition().y);
+                }
+        }
+
+        if (GetPosition().x + moveByY <= 0)
+        {
+                GetSprite().setPosition(Game::SCREEN_WIDTH / 2, Game::SCREEN_HEIGHT / 2);
+                velocity = 200.f;
+                elapsedTimeSinceStart = 0.f;
+                Game::elapsedTimeSinceLastUpgrade = 0.f;
+                ClearUpgrades();
+        }
     }
     
     float moveAmount = velocity * elapsedTime;
